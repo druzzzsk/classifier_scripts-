@@ -92,8 +92,8 @@ def run_pipeline(
 
 if __name__ == "__main__":
     run_pipeline(
-        input_path="C:/Users/User/dnaZyme/data/test_100_sample.csv",
-        seq_model_path="C:/Users/User/dnaZyme/classifier/seq_model.pkl",
-        cof_model_path="C:/Users/User/dnaZyme/classifier/cof_model.pkl",
+        input_path="data/test_100_sample.csv",
+        seq_model_path="classifier/seq_model.pkl",
+        cof_model_path="classifier/cof_model.pkl",
         output_path="final.csv"
     )
