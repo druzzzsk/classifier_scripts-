@@ -1,7 +1,6 @@
-├── classifier_models/       # Model architectures, training, and evaluation code
-├── data/                    # Training and validation datasets
-├── utils/                   # Feature extraction functions for DNA sequences
-├── classifier_script.py     # Script for classifying generated DNA sequences using trained models
-├── get_training_data.py     # Script to generate and prepare training data
-├── requirements.txt         # List of required Python packages
-└── README.md                # Project documentation
+classifier_models/ — contains the code for training and evaluating classification models.
+data/ — includes the datasets used for training and validation.
+utils/ — provides utility functions for extracting descriptors (features) from DNA sequences.
+classifier_script.py — script for running classification on generated DNA sequences using trained models.
+get_training_data.py — script to prepare or generate the data needed for model training.
+requirements.txt — list of required Python libraries to run the project.
