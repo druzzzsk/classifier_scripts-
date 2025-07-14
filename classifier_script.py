@@ -1,17 +1,7 @@
 import pandas as pd
 import joblib
 from typing import Dict, List
-from utils import get_full_descriptors_for_only_seq_classifier
-
-
-# Словарь кофакторов
-COFACTOR_MAPPING: Dict[int, List[str]] = {
-    0: ['Ag+'], 1: ['Ca2+'], 2: ['Cd2+'], 3: ['Ce3+', 'Cr3+'], 4: ['Ce3+'],
-    5: ['Co2+'], 6: ['Cu2+'], 7: ['Gd3+'], 8: ['Mg2+'], 9: ['Mn2+', 'Co2+'],
-    10: ['Mn2+', 'Mg2+', 'Zn2+'], 11: ['Mn2+', 'Mg2+'], 12: ['Mn2+', 'Ni2+', 'Co2+', 'Cd2+'],
-    13: ['Mn2+'], 14: ['Na+'], 15: ['Nd3+'], 16: ['Ni2+', 'Co2+'], 17: ['Ni2+'],
-    18: ['No cofactor'], 19: ['Pb2+'], 20: ['Sm3+'], 21: ['Tm3+', 'Er3+'], 22: ['Zn2+']
-}
+from utils import get_full_descriptors_for_classifier, sel_features, cofactor_mapping
 
 
 def load_model(path: str):
@@ -19,7 +9,8 @@ def load_model(path: str):
 
 
 def extract_sequence_features(df: pd.DataFrame, seq_col: str) -> pd.DataFrame:
-    features = get_full_descriptors_for_only_seq_classifier(df, seq_col)
+    features = get_full_descriptors_for_classifier(df, seq_col)
+    features = features[sel_features]
     features.insert(0, "sequence", df[seq_col])
     return features
 
@@ -83,17 +74,8 @@ def run_pipeline(
     final_df = preds[
         ["sequence", "seq_pred_label", "seq_pred_proba", "cof_pred_label", "cof_pred_proba", "cofactor"]
     ]
-    final_df = map_cofactor_labels(final_df, "cofactor", COFACTOR_MAPPING)
+    final_df = map_cofactor_labels(final_df, "cofactor", cofactor_mapping)
 
     # Сохранение
     final_df.to_csv(output_path, index=False)
     print(f"Результаты сохранены в: {output_path}")
-
-
-if __name__ == "__main__":
-    run_pipeline(
-        input_path="data/test_100_sample.csv",
-        seq_model_path="classifier/seq_model.pkl",
-        cof_model_path="classifier/cof_model.pkl",
-        output_path="final.csv"
-    )
